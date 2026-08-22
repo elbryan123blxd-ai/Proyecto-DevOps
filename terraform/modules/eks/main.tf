@@ -7,6 +7,7 @@ resource "aws_eks_cluster" "main" {
     subnet_ids = var.private_subnet_ids
   }
 
+  bootstrap_self_managed_addons = false
   enabled_cluster_log_types = ["api", "audit", "authenticator"]
 
   tags = {
