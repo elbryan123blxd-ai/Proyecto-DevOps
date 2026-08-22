@@ -41,10 +41,4 @@ module "eks" {
   eks_node_role_arn  = module.iam.eks_node_role_arn
 }
 
-module "argocd" {
-  source = "../../modules/argocd"
 
-  environment          = "dev"
-  eks_cluster_name     = module.eks.cluster_name
-  eks_cluster_endpoint = module.eks.cluster_endpoint
-}

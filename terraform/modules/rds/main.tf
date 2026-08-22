@@ -10,7 +10,7 @@ resource "aws_db_subnet_group" "main" {
 resource "aws_db_instance" "main" {
   identifier             = "${var.cluster_prefix}-db"
   engine                 = "postgres"
-  engine_version         = "16.6"
+  engine_version         = "16.3"
   instance_class         = var.rds_instance_class
   allocated_storage      = 20
   storage_type           = "gp3"
