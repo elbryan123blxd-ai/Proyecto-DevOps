@@ -1,0 +1,38 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: cloudops-store
+spec:
+  replicas: 3
+  strategy:
+    canary:
+      steps:
+        - setWeight: 20
+        - pause: { duration: 1m }
+        - analysis:
+            templates:
+              - templateName: success-rate
+            args:
+              - name: service-name
+                value: cloudops-store
+        - setWeight: 50
+        - pause: { duration: 1m }
+        - setWeight: 80
+        - pause: { duration: 30s }
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels: { app: cloudops-store }
+  template:
+    metadata:
+      labels: { app: cloudops-store }
+    spec:
+      containers:
+        - name: api
+          image: ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/cloudops-gym-api-prod:latest
+          ports: [{ containerPort: 8000 }]
+          readinessProbe:
+            httpGet: { path: /health, port: 8000 }
+            initialDelaySeconds: 10
+          resources:
+            requests: { cpu: "100m", memory: "128Mi" }
+            limits: { cpu: "500m", memory: "512Mi" }

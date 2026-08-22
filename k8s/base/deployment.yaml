@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloudops-store
+  labels: { app: cloudops-store }
+spec:
+  replicas: 1
+  selector:
+    matchLabels: { app: cloudops-store }
+  template:
+    metadata:
+      labels: { app: cloudops-store }
+    spec:
+      containers:
+        - name: api
+          image: cloudops-store-api:latest
+          ports: [{ containerPort: 8000 }]
+          envFrom:
+            - configMapRef: { name: cloudops-config }
+          resources:
+            requests: { cpu: "100m", memory: "128Mi" }
+            limits: { cpu: "500m", memory: "512Mi" }
+        - name: frontend
+          image: cloudops-store-frontend:latest
+          ports: [{ containerPort: 3000 }]

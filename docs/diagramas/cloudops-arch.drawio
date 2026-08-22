@@ -1,0 +1,98 @@
+<mxfile host="app.diagrams.net" modified="2026-08-20T00:00:00.000Z" agent="draw.io" version="24.0.0" type="device">
+  <diagram id="cloudops-arch" name="CloudOps Store - Arquitectura">
+    <mxGraphModel dx="1200" dy="800" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="900" math="0" shadow="1" background="#ffffff">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+
+        <!-- ============ ETAPA 1 DISEÑO ============ -->
+        <mxCell id="s-dev" value="ETAPA 1 · Diseño" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e9f7d5;strokeColor=#33691e;fontColor=#1a3a08;fontStyle=1;verticalAlign=top;spacingTop=6;dashed=0;;arcSize=8;" vertex="1" parent="1">
+          <mxGeometry x="40" y="40" width="180" height="150" as="geometry"/>
+        </mxCell>
+        <mxCell id="n-ide" value="👨‍💻 VS Code" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dcedc8;strokeColor=#33691e;fontColor=#1a3a08;shadow=1;arcSize=18;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="60" y="80" width="140" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="n-gh" value="🐙 GitHub" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dcedc8;strokeColor=#33691e;fontColor=#1a3a08;shadow=1;arcSize=18;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="60" y="130" width="140" height="40" as="geometry"/>
+        </mxCell>
+
+        <!-- ============ ETAPA 2 CI/CD ============ -->
+        <mxCell id="s-ci" value="ETAPA 2 · CI/CD" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5effc;strokeColor=#01579b;fontColor=#013a63;fontStyle=1;verticalAlign=top;spacingTop=6;arcSize=8;" vertex="1" parent="1">
+          <mxGeometry x="280" y="40" width="180" height="150" as="geometry"/>
+        </mxCell>
+        <mxCell id="n-gha" value="🛠️ GitHub Actions&#10;&lt;font style=&quot;font-size:10px&quot;&gt;build + tests&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b3e5fc;strokeColor=#01579b;fontColor=#013a63;shadow=1;arcSize=18;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="300" y="90" width="140" height="50" as="geometry"/>
+        </mxCell>
+
+        <!-- ============ ETAPA 3 REGISTRO ============ -->
+        <mxCell id="s-reg" value="ETAPA 3 · Registro" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff0dc;strokeColor=#e65100;fontColor=#5d2d00;fontStyle=1;verticalAlign=top;spacingTop=6;arcSize=8;" vertex="1" parent="1">
+          <mxGeometry x="520" y="40" width="180" height="150" as="geometry"/>
+        </mxCell>
+        <mxCell id="n-ecr" value="📦 Amazon ECR" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe0b2;strokeColor=#e65100;fontColor=#5d2d00;shadow=1;arcSize=18;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="540" y="90" width="140" height="40" as="geometry"/>
+        </mxCell>
+
+        <!-- ============ ETAPA 4 GITOPS ============ -->
+        <mxCell id="s-git" value="ETAPA 4 · GitOps" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e2d9f5;strokeColor=#4527a0;fontColor=#2a1a5e;fontStyle=1;verticalAlign=top;spacingTop=6;arcSize=8;" vertex="1" parent="1">
+          <mxGeometry x="760" y="40" width="200" height="150" as="geometry"/>
+        </mxCell>
+        <mxCell id="n-repo" value="📚 Repo GitOps" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d1c4e9;strokeColor=#4527a0;fontColor=#2a1a5e;shadow=1;arcSize=18;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="780" y="80" width="160" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="n-argo" value="🌀 ArgoCD" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d1c4e9;strokeColor=#4527a0;fontColor=#2a1a5e;shadow=1;arcSize=18;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="780" y="130" width="160" height="40" as="geometry"/>
+        </mxCell>
+
+        <!-- ============ ETAPA 5 CLUSTER EKS ============ -->
+        <mxCell id="s-k8s" value="ETAPA 5 · Cluster EKS" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe1d6;strokeColor=#bf360c;fontColor=#5c1c0a;fontStyle=1;verticalAlign=top;spacingTop=6;arcSize=6;" vertex="1" parent="1">
+          <mxGeometry x="1020" y="40" width="340" height="200" as="geometry"/>
+        </mxCell>
+        <mxCell id="n-ing" value="🚪 Ingress" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffccbc;strokeColor=#bf360c;fontColor=#5c1c0a;shadow=1;arcSize=18;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1040" y="80" width="140" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="n-fe" value="⚛️ Frontend" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffccbc;strokeColor=#bf360c;fontColor=#5c1c0a;shadow=1;arcSize=18;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1040" y="130" width="140" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="n-api" value="🐍 API" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffccbc;strokeColor=#bf360c;fontColor=#5c1c0a;shadow=1;arcSize=18;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1200" y="130" width="140" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="n-wk" value="⚙️ Worker" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffccbc;strokeColor=#bf360c;fontColor=#5c1c0a;shadow=1;arcSize=18;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1040" y="180" width="140" height="40" as="geometry"/>
+        </mxCell>
+
+        <!-- ============ EXTERNOS / OBSERVABILIDAD ============ -->
+        <mxCell id="n-rds" value="🐘 RDS Postgres" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe0b2;strokeColor=#e65100;fontColor=#5d2d00;shadow=1;arcSize=18;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="1200" y="250" width="140" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="n-sm" value="🔐 Secrets Manager" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe0b2;strokeColor=#e65100;fontColor=#5d2d00;shadow=1;arcSize=18;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="1040" y="320" width="150" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="n-prom" value="📊 Prometheus" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b2dfdb;strokeColor=#00695c;fontColor=#003830;shadow=1;arcSize=18;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1200" y="320" width="140" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="n-graf" value="📈 Grafana" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b2dfdb;strokeColor=#00695c;fontColor=#003830;shadow=1;arcSize=18;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1200" y="370" width="140" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="n-tf" value="🏗️ Terraform" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d7ccc8;strokeColor=#4e342e;fontColor=#261a15;shadow=1;arcSize=18;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="560" y="320" width="140" height="40" as="geometry"/>
+        </mxCell>
+
+        <!-- ============ CONECTORES ============ -->
+        <mxCell id="e1" style="edgeStyle=orthogonalEdgeStyle;html=1;rounded=1;strokeColor=#33691e;strokeWidth=2;fontStyle=0;fontColor=#33691e;" edge="1" source="n-ide" target="n-gh" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e2" value="git push" style="edgeStyle=orthogonalEdgeStyle;html=1;rounded=1;strokeColor=#33691e;strokeWidth=2;fontStyle=1;fontColor=#33691e;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" source="n-gh" target="n-gha" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e3" value="push image" style="edgeStyle=orthogonalEdgeStyle;html=1;rounded=1;strokeColor=#e65100;strokeWidth=2;fontStyle=1;fontColor=#e65100;" edge="1" source="n-gha" target="n-ecr" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e4" value="tag / SHA" style="edgeStyle=orthogonalEdgeStyle;html=1;rounded=1;strokeColor=#e65100;strokeWidth=2;fontStyle=1;fontColor=#e65100;" edge="1" source="n-ecr" target="n-repo" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e5" value="watch" style="edgeStyle=orthogonalEdgeStyle;html=1;rounded=1;strokeColor=#4527a0;strokeWidth=2;fontStyle=1;fontColor=#4527a0;" edge="1" source="n-repo" target="n-argo" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e6" value="sync" style="edgeStyle=orthogonalEdgeStyle;html=1;rounded=1;strokeColor=#4527a0;strokeWidth=2;fontStyle=1;fontColor=#4527a0;" edge="1" source="n-argo" target="n-ing" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e7" edge="1" source="n-ing" target="n-fe" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e8" edge="1" source="n-fe" target="n-api" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e9" edge="1" source="n-api" target="n-wk" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e10" value="SQL" style="edgeStyle=orthogonalEdgeStyle;html=1;rounded=1;strokeColor=#e65100;strokeWidth=2;fontStyle=1;fontColor=#e65100;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" source="n-api" target="n-rds" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e11" value="secrets" style="edgeStyle=orthogonalEdgeStyle;html=1;rounded=1;strokeColor=#e65100;strokeWidth=2;fontStyle=1;fontColor=#e65100;dashed=1;" edge="1" source="n-api" target="n-sm" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e12" value="provision" style="edgeStyle=orthogonalEdgeStyle;html=1;rounded=1;strokeColor=#4e342e;strokeWidth=2;fontStyle=1;fontColor=#4e342e;dashed=1;" edge="1" source="n-tf" target="s-k8s" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e13" value="scrape" style="edgeStyle=orthogonalEdgeStyle;html=1;rounded=1;strokeColor=#00695c;strokeWidth=2;fontStyle=1;fontColor=#00695c;dashed=1;" edge="1" source="n-prom" target="s-k8s" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e14" value="query" style="edgeStyle=orthogonalEdgeStyle;html=1;rounded=1;strokeColor=#00695c;strokeWidth=2;fontStyle=1;fontColor=#00695c;" edge="1" source="n-graf" target="n-prom" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

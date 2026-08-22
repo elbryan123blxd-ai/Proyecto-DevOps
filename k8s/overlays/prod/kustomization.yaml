@@ -1,0 +1,17 @@
+resources:
+  - ../../base
+replicas:
+  - name: cloudops-store
+    count: 3
+images:
+  - name: cloudops-store-api
+    newName: ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/cloudops-gym-api-prod
+    newTag: latest
+  - name: cloudops-store-frontend
+    newName: ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/cloudops-gym-frontend-prod
+    newTag: latest
+configMapGenerator:
+  - name: cloudops-config
+    behavior: merge
+    literals:
+      - APP_ENV=prod

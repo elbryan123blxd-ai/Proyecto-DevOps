@@ -1,0 +1,51 @@
+name: Teardown - destruir infra
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: Entorno a destruir
+        required: true
+        type: choice
+        options: [dev, staging, prod, all]
+        default: dev
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  destroy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configurar credenciales AWS via OIDC
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/github-actions-cloudops
+          aws-region: us-east-1
+
+      - uses: hashicorp/setup-terraform@v3
+        with: { terraform_version: 1.5.0 }
+
+      - name: Destroy dev
+        if: inputs.environment == 'dev' || inputs.environment == 'all'
+        working-directory: terraform/envs/dev
+        run: |
+          terraform init
+          terraform destroy -auto-approve -var-file=dev.tfvars
+
+      - name: Destroy staging
+        if: inputs.environment == 'staging' || inputs.environment == 'all'
+        working-directory: terraform/envs/staging
+        run: |
+          terraform init
+          terraform destroy -auto-approve -var-file=staging.tfvars
+
+      - name: Destroy prod
+        if: inputs.environment == 'prod' || inputs.environment == 'all'
+        working-directory: terraform/envs/prod
+        run: |
+          terraform init
+          terraform destroy -auto-approve -var-file=prod.tfvars

@@ -1,0 +1,17 @@
+resources:
+  - ../../base
+replicas:
+  - name: cloudops-store
+    count: 2
+images:
+  - name: cloudops-store-api
+    newName: ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/cloudops-gym-api-staging
+    newTag: latest
+  - name: cloudops-store-frontend
+    newName: ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/cloudops-gym-frontend-staging
+    newTag: latest
+configMapGenerator:
+  - name: cloudops-config
+    behavior: merge
+    literals:
+      - APP_ENV=staging

@@ -1,0 +1,56 @@
+# ===== Terraform =====
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+*.tfvars
+!.terraform.lock.hcl
+!example.tfvars
+!**/example.tfvars
+crash.log
+overrides.tf
+override.tf.json
+
+# ===== Secretos / credenciales =====
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+secrets/
+secret.yaml
+!**/secret.example.yaml
+
+# ===== Node / Frontend =====
+node_modules/
+dist/
+build/
+.vite/
+npm-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# ===== Python =====
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# ===== K8s / Helm =====
+helm-charts/
+*.tgz
+kubeconfig*
+.kube/
+
+# ===== IDE / OS =====
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db
+*.swp
+*.swo

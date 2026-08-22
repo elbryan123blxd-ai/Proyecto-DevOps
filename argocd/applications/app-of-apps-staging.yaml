@@ -1,0 +1,17 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: app-of-apps-staging
+  namespace: argocd
+spec:
+  project: cloudops-store-staging
+  source:
+    repoURL: https://github.com/elbryan123blxd-ai/Proyecto-DevOps
+    targetRevision: HEAD
+    path: argocd/applications/staging
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+  syncPolicy:
+    automated: { prune: true, selfHeal: true }
+    syncOptions: ["CreateNamespace=true"]

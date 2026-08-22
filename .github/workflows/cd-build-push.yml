@@ -1,0 +1,93 @@
+name: CD - build push ECR + PR GitOps
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "app/**"
+      - ".github/workflows/cd-build-push.yml"
+      - "k8s/**"
+
+permissions:
+  id-token: write
+  contents: write
+  pull-requests: write
+
+env:
+  AWS_REGION: us-east-1
+  ECR_REGISTRY: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com
+
+jobs:
+  build-push:
+    runs-on: ubuntu-latest
+    outputs:
+      image-tag: ${{ steps.tag.outputs.tag }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configurar credenciales AWS via OIDC
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/github-actions-cloudops
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login ECR
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Generar tag inmutable SHA
+        id: tag
+        run: echo "tag=sha-${GITHUB_SHA::7}" >> $GITHUB_OUTPUT
+
+      - uses: docker/setup-buildx-action@v3
+
+      - name: Build y push API
+        uses: docker/build-push-action@v6
+        with:
+          context: ./app/api
+          push: true
+          tags: ${{ env.ECR_REGISTRY }}/cloudops-gym-api-dev:${{ steps.tag.outputs.tag }},${{ env.ECR_REGISTRY }}/cloudops-gym-api-dev:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Build y push frontend
+        uses: docker/build-push-action@v6
+        with:
+          context: ./app/frontend
+          push: true
+          tags: ${{ env.ECR_REGISTRY }}/cloudops-gym-frontend-dev:${{ steps.tag.outputs.tag }},${{ env.ECR_REGISTRY }}/cloudops-gym-frontend-dev:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Build y push worker
+        uses: docker/build-push-action@v6
+        with:
+          context: ./app/worker
+          push: true
+          tags: ${{ env.ECR_REGISTRY }}/cloudops-gym-worker-dev:${{ steps.tag.outputs.tag }},${{ env.ECR_REGISTRY }}/cloudops-gym-worker-dev:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  update-gitops:
+    needs: build-push
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { token: ${{ secrets.GITHUB_TOKEN }} }
+
+      - name: Actualizar tag en k8s overlays dev
+        run: |
+          TAG=${{ needs.build-push.outputs.image-tag }}
+          sed -i "s|newTag: .*|newTag: $TAG|g" k8s/overlays/dev/kustomization.yaml
+          cat k8s/overlays/dev/kustomization.yaml
+
+      - name: Crear PR GitOps
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: gitops/update-image-${{ needs.build-push.outputs.image-tag }}
+          title: "gitops(dev): actualizar imagen a ${{ needs.build-push.outputs.image-tag }}"
+          body: |
+            Actualiza tag de imagen ECR a `${{ needs.build-push.outputs.image-tag }}`
+            ArgoCD sincronizará automáticamente → canary 20% → análisis → 100%
+          commit-message: "gitops(dev): bump image ${{ needs.build-push.outputs.image-tag }}"
+          add-paths: k8s/overlays/dev/kustomization.yaml

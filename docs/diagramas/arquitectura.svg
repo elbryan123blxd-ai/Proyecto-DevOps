@@ -1,0 +1,275 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1450 700" width="100%" height="auto" font-family="-apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">
+  <defs>
+    <!-- Sombras -->
+    <filter id="shadow" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#000" flood-opacity="0.18"/>
+    </filter>
+    <filter id="shadowDeep" x="-15%" y="-15%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="6" stdDeviation="10" flood-color="#000" flood-opacity="0.28"/>
+    </filter>
+    <filter id="glowRed">
+      <feGaussianBlur stdDeviation="28" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+
+    <!-- Gradientes de cabeceras por etapa -->
+    <linearGradient id="gDev" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#43a047"/><stop offset="1" stop-color="#2e7d32"/>
+    </linearGradient>
+    <linearGradient id="gCi" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#1e88e5"/><stop offset="1" stop-color="#0d47a1"/>
+    </linearGradient>
+    <linearGradient id="gReg" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#fb8c00"/><stop offset="1" stop-color="#e65100"/>
+    </linearGradient>
+    <linearGradient id="gGit" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#ab47bc"/><stop offset="1" stop-color="#6a1b9a"/>
+    </linearGradient>
+    <linearGradient id="gK8s" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#e53935"/><stop offset="1" stop-color="#b71c1c"/>
+    </linearGradient>
+    <linearGradient id="gTeal" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#00897b"/><stop offset="1" stop-color="#00695c"/>
+    </linearGradient>
+    <linearGradient id="gGray" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#78909c"/><stop offset="1" stop-color="#455a64"/>
+    </linearGradient>
+    <radialGradient id="bg" cx="0.35" cy="0.15" r="1.2">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="0.55" stop-color="#f3f6fb"/>
+      <stop offset="1" stop-color="#e6ecf5"/>
+    </radialGradient>
+
+    <!-- Flechas -->
+    <marker id="aGreen" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M0 0L10 5L0 10z" fill="#2e7d32"/>
+    </marker>
+    <marker id="aBlue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M0 0L10 5L0 10z" fill="#1565c0"/>
+    </marker>
+    <marker id="aOrange" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M0 0L10 5L0 10z" fill="#ef6c00"/>
+    </marker>
+    <marker id="aPurple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M0 0L10 5L0 10z" fill="#8e24aa"/>
+    </marker>
+    <marker id="aRed" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M0 0L10 5L0 10z" fill="#c62828"/>
+    </marker>
+    <marker id="aTeal" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M0 0L10 5L0 10z" fill="#00695c"/>
+    </marker>
+    <marker id="aGray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M0 0L10 5L0 10z" fill="#546e7a"/>
+    </marker>
+  </defs>
+
+  <!-- Fondo -->
+  <rect x="0" y="0" width="1450" height="700" fill="url(#bg)"/>
+
+  <!-- Tagline -->
+  <text x="24" y="26" font-size="15" font-weight="600" fill="#455a64" letter-spacing="0.5">CÓDIGO → PRODUCCIÓN EN 5 PASOS · PIPELINE GITOPS</text>
+
+  <!-- ============ 1 DESARROLLO ============ -->
+  <g>
+    <rect x="24" y="48" width="240" height="236" rx="16" fill="#e9f7d5" stroke="#2e7d32" stroke-opacity="0.30" stroke-width="1.4"/>
+    <path d="M24 64 Q24 48 40 48 L248 48 Q264 48 264 64 L264 88 Z" fill="url(#gDev)"/>
+    <circle cx="46" cy="68" r="11" fill="#fff" opacity="0.25"/>
+    <text x="46" y="72.5" font-size="12" font-weight="700" fill="#fff" text-anchor="middle">1</text>
+    <text x="64" y="74" font-size="14" font-weight="700" fill="#fff">DISEÑO</text>
+
+    <g filter="url(#shadow)">
+      <rect x="44" y="112" width="200" height="52" rx="12" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2"/>
+      <text x="60" y="144" font-size="24">💻</text>
+      <text x="94" y="139" font-size="15" font-weight="700" fill="#1b5e20">VS Code</text>
+      <text x="94" y="156" font-size="11" fill="#4c8a4f">tu editor favorito</text>
+    </g>
+
+    <g filter="url(#shadow)">
+      <rect x="44" y="204" width="200" height="52" rx="12" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2"/>
+      <text x="60" y="236" font-size="24">🐙</text>
+      <text x="94" y="231" font-size="15" font-weight="700" fill="#1b5e20">GitHub</text>
+      <text x="94" y="248" font-size="11" fill="#4c8a4f">reposy ramas de trabajo</text>
+    </g>
+
+    <path d="M144 164 L144 201" stroke="#2e7d32" stroke-width="2.4" marker-end="url(#aGreen)"/>
+  </g>
+
+  <!-- ============ 2 CI/CD ============ -->
+  <g>
+    <rect x="284" y="48" width="240" height="236" rx="16" fill="#e3f2fb" stroke="#1565c0" stroke-opacity="0.30" stroke-width="1.4"/>
+    <path d="M284 64 Q284 48 300 48 L508 48 Q524 48 524 64 L524 88 Z" fill="url(#gCi)"/>
+    <circle cx="306" cy="68" r="11" fill="#fff" opacity="0.25"/>
+    <text x="306" y="72.5" font-size="12" font-weight="700" fill="#fff" text-anchor="middle">2</text>
+    <text x="324" y="74" font-size="14" font-weight="700" fill="#fff">CI / CD</text>
+
+    <g filter="url(#shadow)">
+      <rect x="304" y="112" width="200" height="66" rx="12" fill="#e3f2fd" stroke="#1565c0" stroke-width="2"/>
+      <text x="320" y="148" font-size="24">🛠️</text>
+      <text x="354" y="140" font-size="15" font-weight="700" fill="#0d47a1">GitHub Actions</text>
+      <text x="354" y="160" font-size="11" fill="#4a7bb0">build + test + push</text>
+    </g>
+  </g>
+
+  <!-- ============ 3 REGISTRO ============ -->
+  <g>
+    <rect x="544" y="48" width="240" height="236" rx="16" fill="#fff3e0" stroke="#ef6c00" stroke-opacity="0.30" stroke-width="1.4"/>
+    <path d="M544 64 Q544 48 560 48 L768 48 Q784 48 784 64 L784 88 Z" fill="url(#gReg)"/>
+    <circle cx="566" cy="68" r="11" fill="#fff" opacity="0.25"/>
+    <text x="566" y="72.5" font-size="12" font-weight="700" fill="#fff" text-anchor="middle">3</text>
+    <text x="584" y="74" font-size="14" font-weight="700" fill="#fff">REGISTRO</text>
+
+    <g filter="url(#shadow)">
+      <rect x="564" y="112" width="200" height="52" rx="12" fill="#fff3e0" stroke="#ef6c00" stroke-width="2"/>
+      <text x="580" y="144" font-size="24">📦</text>
+      <text x="614" y="139" font-size="15" font-weight="700" fill="#b34700">Amazon ECR</text>
+      <text x="614" y="156" font-size="11" fill="#c8794a">solo imágenes probadas</text>
+    </g>
+  </g>
+
+  <!-- ============ 4 GITOPS ============ -->
+  <g>
+    <rect x="804" y="48" width="240" height="236" rx="16" fill="#f3e5f5" stroke="#8e24aa" stroke-opacity="0.30" stroke-width="1.4"/>
+    <path d="M804 64 Q804 48 820 48 L1028 48 Q1044 48 1044 64 L1044 88 Z" fill="url(#gGit)"/>
+    <circle cx="826" cy="68" r="11" fill="#fff" opacity="0.25"/>
+    <text x="826" y="72.5" font-size="12" font-weight="700" fill="#fff" text-anchor="middle">4</text>
+    <text x="844" y="74" font-size="14" font-weight="700" fill="#fff">GITOPS</text>
+
+    <g filter="url(#shadow)">
+      <rect x="824" y="112" width="200" height="52" rx="12" fill="#f3e5f5" stroke="#8e24aa" stroke-width="2"/>
+      <text x="840" y="144" font-size="24">📚</text>
+      <text x="874" y="139" font-size="15" font-weight="700" fill="#4a148c">Repo GitOps</text>
+      <text x="874" y="156" font-size="11" fill="#9a6ab0">estado deseado del cluster</text>
+    </g>
+
+    <g filter="url(#shadow)">
+      <rect x="824" y="204" width="200" height="52" rx="12" fill="#f3e5f5" stroke="#8e24aa" stroke-width="2"/>
+      <text x="840" y="236" font-size="24">🌀</text>
+      <text x="874" y="231" font-size="15" font-weight="700" fill="#4a148c">ArgoCD</text>
+      <text x="874" y="248" font-size="11" fill="#9a6ab0">git → cluster en loop</text>
+    </g>
+
+    <path d="M924 164 L924 201" stroke="#8e24aa" stroke-width="2.4" marker-end="url(#aPurple)"/>
+  </g>
+
+  <!-- ============ 5 CLUSTER EKS ============ -->
+  <g filter="url(#glowRed)">
+    <rect x="1064" y="48" width="350" height="290" rx="16" fill="#fff5f4" stroke="#c62828" stroke-opacity="0.22" stroke-width="1.4"/>
+  </g>
+  <g>
+    <rect x="1064" y="48" width="350" height="290" rx="16" fill="#ffebee" stroke="#c62828" stroke-opacity="0.30" stroke-width="1.4"/>
+    <path d="M1064 64 Q1064 48 1080 48 L1398 48 Q1414 48 1414 64 L1414 88 Z" fill="url(#gK8s)"/>
+    <circle cx="1086" cy="68" r="11" fill="#fff" opacity="0.25"/>
+    <text x="1086" y="72.5" font-size="12" font-weight="700" fill="#fff" text-anchor="middle">5</text>
+    <text x="1104" y="74" font-size="14" font-weight="700" fill="#fff">CLUSTER AWS EKS</text>
+
+    <g filter="url(#shadow)">
+      <rect x="1084" y="112" width="310" height="52" rx="12" fill="#ffebee" stroke="#c62828" stroke-width="2"/>
+      <text x="1100" y="144" font-size="24">🚪</text>
+      <text x="1134" y="139" font-size="15" font-weight="700" fill="#8f1414">Ingress NGINX</text>
+      <text x="1134" y="156" font-size="11" fill="#c05b58">puerta de entrada publica</text>
+    </g>
+
+    <g filter="url(#shadow)">
+      <rect x="1084" y="196" width="145" height="52" rx="12" fill="#ffebee" stroke="#c62828" stroke-width="2"/>
+      <text x="1096" y="228" font-size="24">⚛️</text>
+      <text x="1124" y="227" font-size="14" font-weight="700" fill="#8f1414">Frontend</text>
+    </g>
+
+    <g filter="url(#shadow)">
+      <rect x="1249" y="196" width="145" height="52" rx="12" fill="#ffebee" stroke="#c62828" stroke-width="2"/>
+      <text x="1261" y="228" font-size="24">🐍</text>
+      <text x="1289" y="227" font-size="14" font-weight="700" fill="#8f1414">FastAPI</text>
+    </g>
+
+    <g filter="url(#shadow)">
+      <rect x="1184" y="272" width="150" height="40" rx="12" fill="#ffebee" stroke="#c62828" stroke-width="2"/>
+      <text x="1198" y="297" font-size="20">⚙️</text>
+      <text x="1224" y="298" font-size="13" font-weight="700" fill="#8f1414">Worker</text>
+    </g>
+  </g>
+
+  <!-- ============ FLUJO PRINCIPAL ============ -->
+  <g stroke-width="2.4" fill="none">
+    <path d="M244 204 L282 204" stroke="#1565c0" marker-end="url(#aBlue)"/>
+    <text x="247" y="196" font-size="11" fill="#4a7bb0" font-weight="600">git push</text>
+
+    <path d="M504 140 L542 140" stroke="#ef6c00" marker-end="url(#aOrange)"/>
+    <text x="506" y="132" font-size="11" fill="#c8794a" font-weight="600">push image</text>
+
+    <path d="M764 140 L802 140" stroke="#8e24aa" marker-end="url(#aPurple)"/>
+    <text x="774" y="132" font-size="11" fill="#9a6ab0" font-weight="600">tag / SHA</text>
+
+    <path d="M1024 204 L1062 204" stroke="#c62828" marker-end="url(#aRed)"/>
+    <text x="1026" y="196" font-size="11" fill="#c05b58" font-weight="600">sync</text>
+
+    <path d="M1156 164 L1156 193" stroke="#c62828" marker-end="url(#aRed)"/>
+    <path d="M1229 222 L1246 222" stroke="#c62828" marker-end="url(#aRed)"/>
+    <path d="M1310 248 L1310 270" stroke="#c62828" marker-end="url(#aRed)"/>
+  </g>
+
+  <!-- ============ SERVIDORES EXTERNOS ============ -->
+  <g>
+    <rect x="24" y="520" width="200" height="54" rx="12" fill="#fff3e0" stroke="#ef6c00" stroke-width="2" filter="url(#shadow)"/>
+    <text x="40" y="553" font-size="24">🐘</text>
+    <text x="76" y="547" font-size="15" font-weight="700" fill="#b34700">RDS Postgres</text>
+    <text x="76" y="563" font-size="11" fill="#c8794a">base de datos gestionada</text>
+
+    <rect x="254" y="520" width="200" height="54" rx="12" fill="#eceff1" stroke="#546e7a" stroke-width="2" filter="url(#shadow)"/>
+    <text x="270" y="553" font-size="24">🏗️</text>
+    <text x="306" y="547" font-size="15" font-weight="700" fill="#37474f">Terraform</text>
+    <text x="306" y="563" font-size="11" fill="#6d8188">infra como código</text>
+
+    <rect x="484" y="520" width="200" height="54" rx="12" fill="#fff3e0" stroke="#ef6c00" stroke-width="2" filter="url(#shadow)"/>
+    <text x="500" y="553" font-size="24">🔐</text>
+    <text x="536" y="547" font-size="15" font-weight="700" fill="#b34700">Secrets Manager</text>
+
+    <rect x="714" y="520" width="200" height="54" rx="12" fill="#e0f2f1" stroke="#00695c" stroke-width="2" filter="url(#shadow)"/>
+    <text x="730" y="553" font-size="24">📊</text>
+    <text x="766" y="547" font-size="15" font-weight="700" fill="#003830">Prometheus</text>
+    <text x="766" y="563" font-size="11" fill="#3e8077">metricas del cluster</text>
+
+    <rect x="944" y="520" width="200" height="54" rx="12" fill="#e0f2f1" stroke="#00695c" stroke-width="2" filter="url(#shadow)"/>
+    <text x="960" y="553" font-size="24">📈</text>
+    <text x="996" y="547" font-size="15" font-weight="700" fill="#003830">Grafana</text>
+    <text x="996" y="563" font-size="11" fill="#3e8077">dashboards</text>
+  </g>
+
+  <!-- ============ CONECTORES SECUNDARIOS ============ -->
+  <g stroke-width="2.2" fill="none" stroke-dasharray="7 6">
+    <path d="M1310 248 C1310 400, 254 400, 254 517" stroke="#ef6c00" marker-end="url(#aOrange)"/>
+    <text x="820" y="448" font-size="11" fill="#c8794a" font-weight="600">SQL + ORM</text>
+
+    <path d="M1260 196 C1260 340, 100 340, 100 517" stroke="#ef6c00" marker-end="url(#aOrange)"/>
+    <text x="190" y="380" font-size="11" fill="#c8794a" font-weight="600">lee secretos</text>
+
+    <path d="M814 547 L784 547" stroke="#00695c" marker-end="url(#aTeal)"/>
+    <text x="806" y="539" font-size="11" fill="#3e8077" font-weight="600">query</text>
+
+    <path d="M564 547 C564 400, 1070 380, 1070 342" stroke="#546e7a" marker-end="url(#aGray)"/>
+    <text x="684" y="420" font-size="11" fill="#6d8188" font-weight="600">provision</text>
+  </g>
+
+  <g stroke-width="2.2" fill="none" stroke-dasharray="7 6">
+    <path d="M884 520 C884 430, 1180 400, 1180 342" stroke="#00695c" marker-end="url(#aTeal)"/>
+    <text x="1080" y="452" font-size="11" fill="#3e8077" font-weight="600">scrape metricas</text>
+  </g>
+
+  <!-- Leyenda -->
+  <g>
+    <rect x="24" y="612" width="1120" height="52" rx="12" fill="#ffffff" fill-opacity="0.6" stroke="#cfd8dc" stroke-width="1"/>
+    <text x="44" y="642" font-size="13" font-weight="800" fill="#546e7a">LEYENDA</text>
+    <line x1="150" y1="630" x2="190" y2="630" stroke="#2e7d32" stroke-width="3"/>
+    <text x="200" y="634" font-size="12" fill="#455a64">código →</text>
+    <line x1="290" y1="630" x2="330" y2="630" stroke="#1565c0" stroke-width="3"/>
+    <text x="340" y="634" font-size="12" fill="#455a64">CI/CD</text>
+    <line x1="400" y1="630" x2="440" y2="630" stroke="#ef6c00" stroke-width="3"/>
+    <text x="450" y="634" font-size="12" fill="#455a64">datos / registros</text>
+    <line x1="580" y1="630" x2="620" y2="630" stroke="#8e24aa" stroke-width="3"/>
+    <text x="630" y="634" font-size="12" fill="#455a64">GitOps</text>
+    <line x1="700" y1="630" x2="740" y2="630" stroke="#00695c" stroke-width="3" stroke-dasharray="7 6"/>
+    <text x="750" y="634" font-size="12" fill="#455a64">observabilidad</text>
+    <line x1="880" y1="630" x2="920" y2="630" stroke="#546e7a" stroke-width="3" stroke-dasharray="7 6"/>
+    <text x="930" y="634" font-size="12" fill="#455a64">infra (Terraform)</text>
+  </g>
+</svg>

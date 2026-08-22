@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: cloudops-store
+  labels: { app: cloudops-store }
+spec:
+  selector: { app: cloudops-store }
+  ports:
+    - name: api
+      port: 8000
+      targetPort: 8000
+    - name: frontend
+      port: 3000
+      targetPort: 3000
+  type: ClusterIP
