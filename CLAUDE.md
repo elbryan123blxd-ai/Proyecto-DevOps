@@ -3,7 +3,7 @@
 > **Este archivo es la memoria persistente del proyecto. Léelo SIEMPRE antes de trabajar aquí.**
 > **Se actualiza al cerrar cada fase. Idioma: español (proyecto de Bryan).**
 >
-> **Última actualización: 2026-08-26 - Mejorado por errores de push, servicios huérfanos y estado de remote state**
+> **Última actualización: 2026-08-27 - Fase 4 cerrada: CD OIDC→ECR→GitOps verde en dev (pods 3/3 + /health 200), gotchas OIDC documentados, nodegroup escalada a 2 nodos**
 
 ## ⚠️ ANTES DE TRABAJAR — Chequeos obligatorios
 
@@ -114,14 +114,16 @@ Cada fase = un segmento del video. Marcá cada tarea con `x` cuando esté lista:
 - [x] Kustomize overlays por entorno (replicas 1/2/3)
 - [x] ArgoCD Rollouts (canary) con análisis de metricas
 - [x] ArgoCD Image Updater para detectar actualizaciones de imagen
-- [ ] **Chequeo**: Después de ArgoCD sync, verificar que todos los pods estén Ready
+- [x] **Chequeo**: Después de ArgoCD sync, verificar que todos los pods estén Ready
 
 ### Fase 4 — CI/CD GitHub Actions
-- [ ] PR → build+test (ci-app.yml) — **verifica logs si falla**
-- [ ] merge main → build+push ECR + PR de imagen (cd-build-push.yml)
-- [ ] ArgoCD autosincroniza → canary → 100% → verificación
-- [ ] Secretos via External Secrets desde AWS Secrets Manager (o local en dev)
-- [ ] **Chequeo**: Después de merge main, revisar que el PR de gitops se creó correctamente
+- [x] PR → build+test (ci-app.yml) — **verifica logs si falla**
+- [x] merge main → build+push ECR + PR de imagen (cd-build-push.yml)
+- [x] ArgoCD autosincroniza → canary → 100% → verificación
+- [x] Secretos via External Secrets desde AWS Secrets Manager (o local en dev)
+- [x] **Chequeo**: Después de merge main, revisar que el PR de gitops se creó correctamente
+
+> **Nota Fase 4**: el GitOps es monorepo → el CD hace **commit directo a main** (no PR) + `git pull --rebase` antes del push (evita rejected non-fast-forward). RollingUpdate/startegy en dev; el canary Rollouts aplica en overlays. Secretos dev: manual (`cloudops-store-secrets`, comparación ArgoCD IgnoreExtraneous). El CD también puede escalar el cluster: nodegroup dev = 2 nodos (capacidad para ArgoCD + 3 entornos). Ver gotchas OIDC abajo.
 
 ### Fase 5 — Observabilidad
 - [ ] Prometheus + Grafana + Loki instalados en cluster EKS
@@ -149,6 +151,13 @@ Cada fase = un segmento del video. Marcá cada tarea con `x` cuando esté lista:
 - **NUNCA** commit de secrets en GitHub (usar External Secrets o secrets encrypted)
 - **Workflows requeridos permissions**: `id-token: write`, `contents: write`, `pull-requests: write`
 - **Antes de push**: `git status` y `git lint` si está configurado
+
+### Gotchas OIDC GitHub → AWS IAM (Fase 4, aprendido a fuego)
+- **`sub` nuevo formato**: `repo:owner@<owner_id>/repo@<repo_id>:ref:refs/heads/<branch>` (p. ej. `repo:elbryan123blxd-ai@285740204/Proyecto-DevOps@1348831287:ref:refs/heads/main`). NO se puede matchear por nombre del repo en el `sub` real.
+- **AWS ignora los claims `repository` y `repository_owner`** al evaluar la trust policy (limitación de servicio, aws-actions/configure-aws-credentials#306). Si pones condiciones con esos claims, IAM sigue con `Not authorized to perform sts:AssumeRoleWithWebIdentity` aunque el token sea válido.
+- **Trust policy que FUNCIONA**: `aud=sts.amazonaws.com` (StringEquals) + `sub=repo:elbryan123blxd-ai@*/*:*` (StringLike). El nombre del repo va en el wildcard, no en claims.
+- **Thumbprints**: son de CA/TLS, NO validan el issuer. Los tokens GitHub se firman con kids `38826b17-...` (thumbprint `ca435a63...`), `38e9b30b...`, `4f3e9ad8...` del JWKS. Probar thumbprints extra (canónico `6938fd4d`, raíz ISRG `ab9d0263`) NO arregla nada si la trust policy está mal. GitHub sumó una 4ª llave al JWKS **sin x5c** (no firma tokens todavía).
+- **Diagnóstico utile**: workflow temporal con `actions/jwt-github-action` (imprimir header+claims) + `aws sts assume-role-with-web-identity` crudo con `aws:RequestTag`… ver qué claim llega al asumir. Hacerlo en branch aparte para no disparar el CD.
 
 ### Kubernetes / K8s
 - **kubectl context**: Verificar `kubectl config current-context` antes de aplicar
