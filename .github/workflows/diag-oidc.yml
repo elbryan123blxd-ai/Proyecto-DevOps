@@ -1,0 +1,25 @@
+name: Diag OIDC
+
+on:
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  diag:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Obtener y decodificar claims del id token
+        run: |
+          curl -s -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=sts.amazonaws.com" > tok.json
+          python -c "import json,base64;t=json.load(open('tok.json'))['value'];print('CLAIMS:');print(json.dumps(json.loads(base64.urlsafe_b64decode(t.split('.')[1]+'==')),indent=2))"
+          echo "TOKEN=$(python -c "import json;print(json.load(open('tok.json'))['value'])" )" >> "$GITHUB_ENV"
+
+      - name: Probar assume-role-with-web-identity crudo
+        run: |
+          aws sts assume-role-with-web-identity \
+            --role-arn "${{ secrets.AWS_ROLE_ARN }}" \
+            --role-session-name diag \
+            --web-identity-token "$TOKEN" 2>&1 || echo "FIN"
