@@ -61,6 +61,23 @@ module "ecr" {
   image_count_to_keep = var.ecr_image_count_to_keep
 }
 
+# Repos por entorno (promoción del mismo artefacto desde el CD, sin costo extra)
+module "ecr_staging" {
+  source = "../../modules/ecr"
+
+  name_prefix         = "${var.project}-staging"
+  repositories        = ["api", "frontend", "worker"]
+  image_count_to_keep = var.ecr_image_count_to_keep
+}
+
+module "ecr_prod" {
+  source = "../../modules/ecr"
+
+  name_prefix         = "${var.project}-prod"
+  repositories        = ["api", "frontend", "worker"]
+  image_count_to_keep = var.ecr_image_count_to_keep
+}
+
 # --- Roles IAM (GitHub OIDC + gitops) ---
 module "iam" {
   source = "../../modules/iam"
