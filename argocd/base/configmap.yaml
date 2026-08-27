@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cloudops-store-config
+data:
+  POLL_INTERVAL: "3"
+  PROCESSING_DELAY_MS: "1500"

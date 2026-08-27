@@ -1,0 +1,25 @@
+# === Terraform state ===
+*.tfstate
+*.tfstate.*
+.terraform/
+crash.log
+
+# === Env / secrets ===
+.env
+.env.*
+!.env.example
+
+# === Python ===
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+
+# === Node / frontend ===
+node_modules/
+dist/
+*.local
+
+# === Docker ===
+*.log

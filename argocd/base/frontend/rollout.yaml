@@ -1,0 +1,45 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: frontend
+  labels:
+    app.kubernetes.io/name: cloudops-store
+    app.kubernetes.io/component: frontend
+    app.kubernetes.io/part-of: cloudops-store
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: cloudops-store
+      app.kubernetes.io/component: frontend
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: cloudops-store
+        app.kubernetes.io/component: frontend
+    spec:
+      containers:
+        - name: frontend
+          image: IMAGE-frontend
+          ports:
+            - name: http
+              containerPort: 80
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128Mi
+            limits:
+              cpu: 200m
+              memory: 256Mi
+  strategy:
+    canary:
+      # Análisis de métricas: se activa en el overlay de prod (Fase 5, con Prometheus)
+      steps:
+        - setWeight: 5
+        - pause: { duration: 30 }
+        - setWeight: 25
+        - pause: { duration: 30 }
+        - setWeight: 50
+        - pause: { duration: 30 }
+        - setWeight: 100

@@ -1,0 +1,24 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: dev
+
+resources:
+  - namespace.yaml
+  - ../../base
+
+images:
+  - name: IMAGE-api
+    newName: 499503541876.dkr.ecr.us-east-1.amazonaws.com/cloudops-dev-api
+    newTag: latest
+  - name: IMAGE-worker
+    newName: 499503541876.dkr.ecr.us-east-1.amazonaws.com/cloudops-dev-worker
+    newTag: latest
+  - name: IMAGE-frontend
+    newName: 499503541876.dkr.ecr.us-east-1.amazonaws.com/cloudops-dev-frontend
+    newTag: latest
+
+patchesStrategicMerge:
+  - api.yaml
+  - worker.yaml
+  - frontend.yaml

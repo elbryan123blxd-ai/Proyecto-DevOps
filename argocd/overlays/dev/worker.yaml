@@ -1,0 +1,7 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: worker
+  annotations:
+    argocd-image-updater.argoproj.io/image-list: worker=499503541876.dkr.ecr.us-east-1.amazonaws.com/cloudops-dev-worker
+    argocd-image-updater.argoproj.io/worker.update-strategy: latest

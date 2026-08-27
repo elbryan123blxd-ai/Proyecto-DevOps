@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: staging
+  namespace: argocd
+spec:
+  description: "Entorno staging - cloudops-store"
+  sourceRepos:
+    - "https://github.com/elbryan123blxd-ai/Proyecto-DevOps"
+  destinations:
+    - namespace: staging
+      server: https://kubernetes.default.svc
+  clusterResourceWhitelist:
+    - group: ""
+      kind: Namespace
+  roles:
+    - name: read-only
+      description: "Lectura del proyecto staging"
+      policies:
+        - p, proj:staging:read-only, applications, get, staging/*, allow
+      groups:
+        - devs

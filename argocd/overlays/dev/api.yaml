@@ -1,0 +1,7 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api
+  annotations:
+    argocd-image-updater.argoproj.io/image-list: api=499503541876.dkr.ecr.us-east-1.amazonaws.com/cloudops-dev-api
+    argocd-image-updater.argoproj.io/api.update-strategy: latest

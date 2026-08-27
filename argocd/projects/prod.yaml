@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: prod
+  namespace: argocd
+spec:
+  description: "Entorno prod - cloudops-store (no tocar a mano)"
+  sourceRepos:
+    - "https://github.com/elbryan123blxd-ai/Proyecto-DevOps"
+  destinations:
+    - namespace: prod
+      server: https://kubernetes.default.svc
+  clusterResourceWhitelist:
+    - group: ""
+      kind: Namespace
+  roles:
+    - name: read-only
+      description: "Lectura del proyecto prod"
+      policies:
+        - p, proj:prod:read-only, applications, get, prod/*, allow
+      groups:
+        - devs

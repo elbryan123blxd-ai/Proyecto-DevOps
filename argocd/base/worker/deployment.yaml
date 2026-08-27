@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: worker
+  labels:
+    app.kubernetes.io/name: cloudops-store
+    app.kubernetes.io/component: worker
+    app.kubernetes.io/part-of: cloudops-store
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: cloudops-store
+      app.kubernetes.io/component: worker
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: cloudops-store
+        app.kubernetes.io/component: worker
+    spec:
+      containers:
+        - name: worker
+          image: IMAGE-worker
+          envFrom:
+            - secretRef:
+                name: cloudops-store-secrets
+          env:
+            - name: POLL_INTERVAL
+              valueFrom:
+                configMapKeyRef:
+                  name: cloudops-store-config
+                  key: POLL_INTERVAL
+            - name: PROCESSING_DELAY_MS
+              valueFrom:
+                configMapKeyRef:
+                  name: cloudops-store-config
+                  key: PROCESSING_DELAY_MS
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128Mi
+            limits:
+              cpu: 200m
+              memory: 256Mi
