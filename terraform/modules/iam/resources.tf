@@ -23,15 +23,29 @@ data "aws_iam_policy_document" "github_trust" {
     }
 
     condition {
-      test     = "StringLike"
-      variable = "token.actions.githubusercontent.com:sub"
-      values   = ["repo:${var.github_repo}:*"]
+      test     = "StringEquals"
+      variable = "token.actions.githubusercontent.com:aud"
+      values   = ["sts.amazonaws.com"]
+    }
+
+    # GitHub cambió el formato del claim "sub" (ahora incluye @owner_id y @repo_id).
+    # Igualamos de forma robusta con los claims exactos "repository" / "repository_owner".
+    condition {
+      test     = "StringEquals"
+      variable = "token.actions.githubusercontent.com:repository"
+      values   = [var.github_repo]
     }
 
     condition {
       test     = "StringEquals"
-      variable = "token.actions.githubusercontent.com:aud"
-      values   = ["sts.amazonaws.com"]
+      variable = "token.actions.githubusercontent.com:repository_owner"
+      values   = [split("/", var.github_repo)[0]]
+    }
+
+    condition {
+      test     = "StringLike"
+      variable = "token.actions.githubusercontent.com:sub"
+      values   = ["repo:${split("/", var.github_repo)[0]}@*/*:*"]
     }
   }
 }
