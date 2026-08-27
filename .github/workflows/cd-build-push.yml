@@ -37,7 +37,6 @@ jobs:
         with:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
           aws-region: ${{ secrets.AWS_REGION }}
-          debug: true
 
       - name: Login a Amazon ECR
         id: login-ecr
