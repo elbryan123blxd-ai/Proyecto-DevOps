@@ -3,14 +3,13 @@ locals {
 }
 
 # --- GitHub OIDC provider ---
-data "tls_certificate" "github" {
-  url = "https://token.actions.githubusercontent.com/.well-known/openid-configuration"
-}
-
+# GitHub ROTA sus llaves de firma (JWKS). Si OIDC falla con
+# "Not authorized to perform sts:AssumeRoleWithWebIdentity", actualizar
+# github_oidc_thumbprints con los thumbprints de https://token.actions.githubusercontent.com/.well-known/jwks
 resource "aws_iam_openid_connect_provider" "github" {
   url             = "https://token.actions.githubusercontent.com"
   client_id_list  = ["sts.amazonaws.com"]
-  thumbprint_list = [data.tls_certificate.github.certificates[0].sha1_fingerprint]
+  thumbprint_list = var.github_oidc_thumbprints
 }
 
 # --- Trust policy: repo -> asume role via web identity ---

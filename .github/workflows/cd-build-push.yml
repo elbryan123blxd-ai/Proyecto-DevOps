@@ -5,6 +5,11 @@ on:
     branches: [main]
     paths-ignore:
       - "argocd/**"
+      - "terraform/**"
+      - "docs/**"
+      - "observability/**"
+      - "CLAUDE.md"
+      - "README.md"
 
 permissions:
   id-token: write
