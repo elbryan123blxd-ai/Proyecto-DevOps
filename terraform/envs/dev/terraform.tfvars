@@ -17,9 +17,11 @@ db_multi_az            = false
 db_deletion_protection = false
 
 # EKS (nodos tamaño medio para margen de RAM con ArgoCD+Rollouts)
+# 2 nodos: 1 no alcanza para ArgoCD(9 pods) + kube-system(4) + app dev/staging/prod (18)
+# Capacidad total t3.medium = 17 pods * 2 = 34 (necesario ~31). Reversible a 1 nodo en Fase 6 teardown.
 node_instance_types = ["t3.medium"]
-node_min_size       = 1
-node_desired_size   = 1
+node_min_size       = 2
+node_desired_size   = 2
 node_max_size       = 2
 
 # ArgoCD
