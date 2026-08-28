@@ -1,0 +1,28 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: cloudops-store-rollouts
+  namespace: argocd
+  labels:
+    release: kube-prometheus-stack
+    app.kubernetes.io/part-of: cloudops-store
+spec:
+  groups:
+    - name: cloudops-store-rollouts.rules
+      rules:
+        - alert: RolloutDegraded
+          expr: rollout_info{namespace="prod", phase="Degraded"} == 1
+          for: 60s
+          labels:
+            severity: critical
+          annotations:
+            summary: "Rollout {{ $labels.name }} degradado en prod"
+            description: "El rollout {{ $labels.name }} lleva mas de 60s en fase Degraded. El canary no pudo progresar o las replicas no estan Available."
+        - alert: RolloutAborted
+          expr: rollout_info{namespace="prod", phase="Abort"} == 1
+          for: 30s
+          labels:
+            severity: critical
+          annotations:
+            summary: "Rollout {{ $labels.name }} abortado en prod"
+            description: "El rollout {{ $labels.name }} entro en fase Abort (AnalysisRun fallido o timeout). Tráfico estabilizado en la version anterior."
