@@ -10,13 +10,13 @@ resources:
 images:
   - name: IMAGE-api
     newName: 499503541876.dkr.ecr.us-east-1.amazonaws.com/cloudops-staging-api
-    newTag: latest
+    newTag: sha-c194d95
   - name: IMAGE-worker
     newName: 499503541876.dkr.ecr.us-east-1.amazonaws.com/cloudops-staging-worker
-    newTag: latest
+    newTag: sha-c194d95
   - name: IMAGE-frontend
     newName: 499503541876.dkr.ecr.us-east-1.amazonaws.com/cloudops-staging-frontend
-    newTag: latest
+    newTag: sha-c194d95
 
 patchesStrategicMerge:
   - api.yaml
