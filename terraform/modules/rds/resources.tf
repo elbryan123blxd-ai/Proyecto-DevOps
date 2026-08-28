@@ -54,4 +54,10 @@ resource "aws_db_instance" "this" {
     Name        = "${var.name_prefix}-postgres"
     environment = var.environment
   })
+
+  # La password master se gestiona fuera de Terraform (Secrets Manager / manual).
+  # Evita rotaciones accidentales o diffs por placeholder en el state.
+  lifecycle {
+    ignore_changes = [password]
+  }
 }

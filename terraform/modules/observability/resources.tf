@@ -102,30 +102,57 @@ resource "helm_release" "loki" {
   atomic     = true
   timeout    = 600
 
-  set {
-    name  = "deploymentMode"
-    value = "SingleBinary"
-  }
+  # values YAML: más fiable que `set` para estructuras anidadas (emptyDir).
+  values = [
+    <<-EOT
+deploymentMode: SingleBinary
 
-  set {
-    name  = "singleBinary.replicas"
-    value = "1"
-  }
+# Modo SingleBinary puro: apagar los targets escalables (default del chart = 3).
+read:
+  replicas: 0
+write:
+  replicas: 0
+backend:
+  replicas: 0
+singleBinary:
+  replicas: 1
+  persistence:
+    enabled: false
+  # Loki corre con readOnlyRootFilesystem: true; mountear un emptyDir en
+  # /var/loki (path_prefix) para que pueda escribir chunks/índices.
+  extraVolumes:
+    - name: data
+      emptyDir: {}
+  extraVolumeMounts:
+    - name: data
+      mountPath: /var/loki
 
-  set {
-    name  = "loki.auth_enabled"
-    value = "false"
-  }
+# Accesorios del chart que no hacen faltan en el demo (ahorran pods y memoria):
+# gateway (nginx), caches memcached y loki-canary.
+gateway:
+  enabled: false
+resultsCache:
+  enabled: false
+chunksCache:
+  enabled: false
+lokiCanary:
+  enabled: false
+test:
+  enabled: false
 
-  set {
-    name  = "loki.commonConfig.replication_factor"
-    value = "1"
-  }
-
-  set {
-    name  = "singleBinary.persistence.enabled"
-    value = "false"
-  }
+loki:
+  auth_enabled: false
+  commonConfig:
+    replication_factor: 1
+  # Storage filesystem: sin buckets S3 (demo sin persistencia de logs).
+  storage:
+    type: filesystem
+    filesystem:
+      chunks_directory: /var/loki/chunks
+  # Esquema de test: evita exigir schemaConfig/bucketNames completos.
+  useTestSchema: true
+EOT
+  ]
 
   depends_on = [kubernetes_namespace_v1.monitoring]
 }
