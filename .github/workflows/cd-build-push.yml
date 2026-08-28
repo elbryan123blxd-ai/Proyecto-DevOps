@@ -1,4 +1,4 @@
-name: CD - Build & Push ECR + GitOps (dev)
+name: CD - Build & Push ECR + GitOps (multi-env)
 
 on:
   push:
@@ -10,11 +10,13 @@ on:
       - "observability/**"
       - "CLAUDE.md"
       - "README.md"
+  workflow_dispatch:
 
 permissions:
   id-token: write
   contents: write
 
+# Serializar promociones de GitOps: push + dispatch comparten el mismo grupo
 concurrency:
   group: cd-main
   cancel-in-progress: false
@@ -25,8 +27,10 @@ env:
   ECR_REGISTRY: 499503541876.dkr.ecr.us-east-1.amazonaws.com
 
 jobs:
-  build-and-push:
-    name: Build & push + promover GitOps
+  # Push a main: build 1 vez y promover el mismo artefacto a dev + staging (CD continuo)
+  build-and-push-dev-staging:
+    name: Build & push + promover GitOps (dev+staging)
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -46,46 +50,120 @@ jobs:
         id: tag
         run: echo "image_tag=sha-${GITHUB_SHA::7}" >> "$GITHUB_OUTPUT"
 
-      - name: Build & push API
+      - name: Build & push API (dev+staging)
         uses: docker/build-push-action@v6
         with:
           context: app/api
           push: true
-          tags: ${{ env.ECR_REGISTRY }}/cloudops-dev-api:${{ steps.tag.outputs.image_tag }}
+          tags: |
+            ${{ env.ECR_REGISTRY }}/cloudops-dev-api:${{ steps.tag.outputs.image_tag }}
+            ${{ env.ECR_REGISTRY }}/cloudops-staging-api:${{ steps.tag.outputs.image_tag }}
 
-      - name: Build & push Worker
+      - name: Build & push Worker (dev+staging)
         uses: docker/build-push-action@v6
         with:
           context: app/worker
           push: true
-          tags: ${{ env.ECR_REGISTRY }}/cloudops-dev-worker:${{ steps.tag.outputs.image_tag }}
+          tags: |
+            ${{ env.ECR_REGISTRY }}/cloudops-dev-worker:${{ steps.tag.outputs.image_tag }}
+            ${{ env.ECR_REGISTRY }}/cloudops-staging-worker:${{ steps.tag.outputs.image_tag }}
 
-      - name: Build & push Frontend
+      - name: Build & push Frontend (dev+staging)
         uses: docker/build-push-action@v6
         with:
           context: app/frontend
           push: true
-          tags: ${{ env.ECR_REGISTRY }}/cloudops-dev-frontend:${{ steps.tag.outputs.image_tag }}
+          tags: |
+            ${{ env.ECR_REGISTRY }}/cloudops-dev-frontend:${{ steps.tag.outputs.image_tag }}
+            ${{ env.ECR_REGISTRY }}/cloudops-staging-frontend:${{ steps.tag.outputs.image_tag }}
 
-      - name: Actualizar tag en overlay de dev
+      - name: Actualizar tag en overlays de dev y staging
         run: |
           sed -i "s|newTag: .*|newTag: ${{ steps.tag.outputs.image_tag }}|" argocd/overlays/dev/kustomization.yaml
+          sed -i "s|newTag: .*|newTag: ${{ steps.tag.outputs.image_tag }}|" argocd/overlays/staging/kustomization.yaml
 
-      - name: ¿Cambió la versión en el overlay de dev?
+      - name: ¿Cambió la versión en los overlays?
         id: diff
         run: |
-          if git diff --quiet argocd/overlays/dev/kustomization.yaml; then
+          if git diff --quiet argocd/overlays/dev/kustomization.yaml argocd/overlays/staging/kustomization.yaml; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
           else
             echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Commit GitOps (promover tag en dev)
+      - name: Commit GitOps (promover tag en dev+staging)
         if: steps.diff.outputs.changed == 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add argocd/overlays/dev/kustomization.yaml
-          git commit -m "chore(gitops): promover ${{ steps.tag.outputs.image_tag }} a dev"
+          git add argocd/overlays/dev/kustomization.yaml argocd/overlays/staging/kustomization.yaml
+          git commit -m "chore(gitops): promover ${{ steps.tag.outputs.image_tag }} a dev+staging"
+          git pull --rebase origin main
+          git push origin HEAD:main
+
+  # Gate manual: promover el mismo artefacto a prod (solo al ejecutar el workflow a mano)
+  promote-prod:
+    name: Promover a prod (gate manual)
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configurar credenciales AWS via OIDC
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Login a Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Definir tag de imagen
+        id: tag
+        run: echo "image_tag=sha-${GITHUB_SHA::7}" >> "$GITHUB_OUTPUT"
+
+      - name: Build & push API (prod)
+        uses: docker/build-push-action@v6
+        with:
+          context: app/api
+          push: true
+          tags: ${{ env.ECR_REGISTRY }}/cloudops-prod-api:${{ steps.tag.outputs.image_tag }}
+
+      - name: Build & push Worker (prod)
+        uses: docker/build-push-action@v6
+        with:
+          context: app/worker
+          push: true
+          tags: ${{ env.ECR_REGISTRY }}/cloudops-prod-worker:${{ steps.tag.outputs.image_tag }}
+
+      - name: Build & push Frontend (prod)
+        uses: docker/build-push-action@v6
+        with:
+          context: app/frontend
+          push: true
+          tags: ${{ env.ECR_REGISTRY }}/cloudops-prod-frontend:${{ steps.tag.outputs.image_tag }}
+
+      - name: Actualizar tag en overlay de prod
+        run: |
+          sed -i "s|newTag: .*|newTag: ${{ steps.tag.outputs.image_tag }}|" argocd/overlays/prod/kustomization.yaml
+
+      - name: ¿Cambió la versión en el overlay de prod?
+        id: diff
+        run: |
+          if git diff --quiet argocd/overlays/prod/kustomization.yaml; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Commit GitOps (promover tag en prod)
+        if: steps.diff.outputs.changed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add argocd/overlays/prod/kustomization.yaml
+          git commit -m "chore(gitops): promover ${{ steps.tag.outputs.image_tag }} a prod"
           git pull --rebase origin main
           git push origin HEAD:main
