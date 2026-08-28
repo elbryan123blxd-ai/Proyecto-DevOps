@@ -30,17 +30,20 @@ body {
   display: flex;
   align-items: baseline;
   gap: 0.75rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid var(--border);
+  padding: 1rem 1.25rem;
+  border-radius: 0.5rem;
+  background: #16a34a;
+  border-bottom: none;
 }
 
 .header h1 {
   margin: 0;
   font-size: 1.6rem;
+  color: #0f172a;
 }
 
 .tagline {
-  color: var(--muted);
+  color: #14532d;
 }
 
 .layout {
