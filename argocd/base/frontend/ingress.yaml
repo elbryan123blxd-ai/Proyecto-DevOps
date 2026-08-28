@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: frontend
+  labels:
+    app.kubernetes.io/name: cloudops-store
+    app.kubernetes.io/component: frontend
+    app.kubernetes.io/part-of: cloudops-store
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: frontend.cloudops.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: frontend
+                port:
+                  name: http

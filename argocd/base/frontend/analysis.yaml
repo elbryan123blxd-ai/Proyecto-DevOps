@@ -13,12 +13,13 @@ spec:
       failureLimit: 3
       provider:
         prometheus:
-          # Activo cuando Fase 5 instale Prometheus (namespace prometheus)
-          address: http://prometheus-server.prometheus:9090
+          # Prometheus real de kube-prometheus-stack (Fase 5, namespace monitoring)
+          address: http://kube-prometheus-stack-prometheus.monitoring:9090
           query: |
             sum(
               rate(
                 nginx_ingress_controller_requests{
+                  namespace="prod",
                   ingress="frontend",
                   status!~"5.."
                 }[2m]
@@ -28,6 +29,7 @@ spec:
             sum(
               rate(
                 nginx_ingress_controller_requests{
+                  namespace="prod",
                   ingress="frontend"
                 }[2m]
               )

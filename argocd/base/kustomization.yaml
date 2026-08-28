@@ -5,7 +5,9 @@ resources:
   - configmap.yaml
   - api/deployment.yaml
   - api/service.yaml
+  - api/ingress.yaml
   - worker/deployment.yaml
   - frontend/rollout.yaml
   - frontend/service.yaml
+  - frontend/ingress.yaml
   - frontend/analysis.yaml
