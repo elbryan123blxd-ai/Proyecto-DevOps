@@ -155,3 +155,14 @@ module "argocd" {
   install_rollouts       = var.install_rollouts
   admin_password         = var.argocd_admin_password
 }
+
+# --- Observabilidad (Fase 5): Prometheus + Grafana + Loki + ingress-nginx ---
+module "observability" {
+  source = "../../modules/observability"
+
+  cluster_name           = module.eks.cluster_name
+  cluster_endpoint       = module.eks.cluster_endpoint
+  cluster_ca_certificate = module.eks.cluster_certificate_authority
+  region                 = var.region
+  grafana_admin_password = var.grafana_admin_password
+}

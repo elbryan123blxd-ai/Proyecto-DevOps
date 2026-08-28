@@ -120,3 +120,10 @@ variable "argocd_admin_password" {
   sensitive   = true
   default     = ""
 }
+
+variable "grafana_admin_password" {
+  description = "Password admin de Grafana. Vacío = default del chart (prom-operator)"
+  type        = string
+  sensitive   = true
+  default     = ""
+}
