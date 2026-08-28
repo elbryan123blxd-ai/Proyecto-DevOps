@@ -8,6 +8,8 @@ on:
       - "terraform/**"
       - "docs/**"
       - "observability/**"
+      - ".vscode/**"
+      - ".gitignore"
       - "CLAUDE.md"
       - "README.md"
   workflow_dispatch:

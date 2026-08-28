@@ -1,0 +1,30 @@
+{
+  "terraform.validation.enableEnhancedValidation": true,
+  "terraform.languageServer.ignoreDirectoryNames": [
+    "node_modules",
+    ".git",
+    ".venv",
+    "__pycache__",
+    "dist",
+    "build",
+    "bin"
+  ],
+  "[terraform]": {
+    "editor.formatOnSave": true,
+    "editor.tabSize": 2,
+    "editor.defaultFormatter": "hashicorp.terraform"
+  },
+  "[terraform-vars]": {
+    "editor.formatOnSave": true,
+    "editor.tabSize": 2,
+    "editor.defaultFormatter": "hashicorp.terraform"
+  },
+  "files.associations": {
+    "*.tf": "terraform",
+    "*.tfvars": "terraform-vars",
+    "*.tfstate": "json"
+  },
+  "files.exclude": {
+    "**/.terraform": true
+  }
+}

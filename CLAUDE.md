@@ -152,6 +152,14 @@ Cada fase = un segmento del video. Marcá cada tarea con `x` cuando esté lista:
 - **Estado**: Backend local en `terraform/terraform.tfstate`
 - **Lock**: DynamoDB table para prevenir concurrent terraform runs (siempre activa)
 
+### Editor (VS Code) — Terraform
+- **Abrí el repositorio como carpeta raíz** (Proyecto-DevOps). terraform-ls indexa los root modules solos (`terraform/envs/dev|staging|prod`, `bootstrap`); también detecta los módulos (argocd, vpc, eks...).
+- Si el editor marca **`Unexpected block: Blocks of type "set"/"dynamic"/"kubernetes" are not expected here`** en el módulo argocd → **NO es un error del código** (el `terraform validate` desde `terraform/envs/dev` da Success). El Language Server no cargó los schemas de los providers helm/kubernetes.
+- **Fix**: Paleta de comandos → `Terraform: Initialize Workspace` sobre `terraform/envs/dev` (equivale a `terraform init` para los schemas) → `Developer: Reload Window` para reiniciar terraform-ls.
+- `terraform.languageServer.rootModules` está **deprecated/no-op** (ext >= 2.24) — no usarlo; la extensión resuelve los roots recursivamente.
+- `terraform validate` (CLI) es la fuente de verdad: si dice Success, el error es del editor, no del repo.
+- `.vscode/settings.json` commiteado: format-on-save (`terraform fmt`), enhanced validation y `ignoreDirectoryNames` (node_modules, .git...). Está en `paths-ignore` del CD → editar config no dispara build.
+
 ### GitHub Actions
 - **OIDC**: Usar `aws-actions/configure-aws-credentials` con role ARN
 - **NUNCA** commit de secrets en GitHub (usar External Secrets o secrets encrypted)
