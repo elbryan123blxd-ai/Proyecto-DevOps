@@ -19,8 +19,7 @@ spec:
             sum(
               rate(
                 nginx_ingress_controller_requests{
-                  namespace="prod",
-                  ingress="frontend",
+                  host="frontend.prod.cloudops.local",
                   status!~"5.."
                 }[2m]
               )
@@ -29,8 +28,9 @@ spec:
             sum(
               rate(
                 nginx_ingress_controller_requests{
-                  namespace="prod",
-                  ingress="frontend"
+                  host="frontend.prod.cloudops.local"
                 }[2m]
               )
-            ) * 100
+            )
+            * 100
+            or vector(100)
