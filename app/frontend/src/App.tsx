@@ -114,8 +114,8 @@ export default function App() {
   return (
     <div className="app">
       <header className="header">
-        <h1>☁️ cloudops-store</h1>
-        <span className="tagline">Tu tienda de servicios cloud</span>
+        <h1>☁️ cloudops-store v2</h1>
+        <span className="tagline">Tu tienda de servicios cloud — canary rollout</span>
       </header>
 
       {loading && <p className="empty">Cargando catálogo...</p>}
