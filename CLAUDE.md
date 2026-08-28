@@ -3,7 +3,7 @@
 > **Este archivo es la memoria persistente del proyecto. Léelo SIEMPRE antes de trabajar aquí.**
 > **Se actualiza al cerrar cada fase. Idioma: español (proyecto de Bryan).**
 >
-> **Última actualización: 2026-08-27 - Fase 4 cerrada: CD OIDC→ECR→GitOps verde en dev (pods 3/3 + /health 200), gotchas OIDC documentados, nodegroup escalada a 2 nodos**
+> **Última actualización: 2026-08-27 - Fase 4 cerrada + staging verde: CD multi-env (build 1 vez, dev+staging auto, prod con gate manual `workflow_dispatch`), 6 repos ECR por entorno, /health 200 en dev y staging**
 
 ## ⚠️ ANTES DE TRABAJAR — Chequeos obligatorios
 
@@ -123,7 +123,13 @@ Cada fase = un segmento del video. Marcá cada tarea con `x` cuando esté lista:
 - [x] Secretos via External Secrets desde AWS Secrets Manager (o local en dev)
 - [x] **Chequeo**: Después de merge main, revisar que el PR de gitops se creó correctamente
 
-> **Nota Fase 4**: el GitOps es monorepo → el CD hace **commit directo a main** (no PR) + `git pull --rebase` antes del push (evita rejected non-fast-forward). RollingUpdate/startegy en dev; el canary Rollouts aplica en overlays. Secretos dev: manual (`cloudops-store-secrets`, comparación ArgoCD IgnoreExtraneous). El CD también puede escalar el cluster: nodegroup dev = 2 nodos (capacidad para ArgoCD + 3 entornos). Ver gotchas OIDC abajo.
+> **Nota Fase 4**: el GitOps es monorepo → el CD hace **commit directo a main** (no PR) + `git pull --rebase` antes del push (evita rejected non-fast-forward). Estrategia multi-env: **build 1 vez, promover el mismo artefacto** (`sha-<7>`).
+> - **Push a main (auto)**: build + push a repos dev **y** staging (`cloudops-dev-*`/`cloudops-staging-*`) + commit GitOps `promover sha-X a dev+staging` (2 overlays).
+> - **Prod**: gate manual `workflow_dispatch` (job `promote-prod`) → repos `cloudops-prod-*` + overlay prod. **OJO**: prod queda verde recién tras Fase 5, porque `overlays/prod/frontend.yaml` corre análisis canary contra `prometheus-server.prometheus:9090` (sin Prometheus el rollout aborta).
+> - Repos ECR (11): viejos `cloudops-api`/`cloudops-frontend` + 9 por entorno. Lifecycle mantiene últimas 10 imágenes.
+> - **Secretos**: `cloudops-store-secrets` manual por namespace (dev/staging/prod apuntan al RDS único de dev; cluster único + comparación ArgoCD IgnoreExtraneous). Fase 4 no externalizó Secrets Manager.
+> - **Capacidad**: nodegroup dev = 2 nodos (ArgoCD 9 pods + kube-system 4 + apps 18). Fase 5 (Prometheus/Grafana/Loki +~8 pods) requiere 3er nodo (+~$30/mes) o recortar dex/notifications/applicationset.
+> - Canary (base, dev/staging): pasos 5→25→50→100% sin análisis; el `analysis` solo en prod. Ver gotchas OIDC abajo.
 
 ### Fase 5 — Observabilidad
 - [ ] Prometheus + Grafana + Loki instalados en cluster EKS
