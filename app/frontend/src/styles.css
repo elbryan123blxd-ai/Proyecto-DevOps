@@ -46,6 +46,20 @@ body {
   color: #14532d;
 }
 
+.badge-v2 {
+  display: inline-block;
+  margin-left: 0.5rem;
+  padding: 0.1rem 0.6rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.95);
+  color: #16a34a;
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  vertical-align: middle;
+}
+
 .layout {
   display: grid;
   grid-template-columns: 1fr 320px;

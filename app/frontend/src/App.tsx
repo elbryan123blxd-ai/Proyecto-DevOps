@@ -114,7 +114,7 @@ export default function App() {
   return (
     <div className="app">
       <header className="header">
-        <h1>☁️ cloudops-store v2</h1>
+        <h1>☁️ cloudops-store <span className="badge-v2">v2</span></h1>
         <span className="tagline">Tu tienda de servicios cloud — canary rollout</span>
       </header>
 
