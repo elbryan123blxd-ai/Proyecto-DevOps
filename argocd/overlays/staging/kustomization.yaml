@@ -5,6 +5,7 @@ namespace: staging
 
 resources:
   - namespace.yaml
+  - analysis.yaml
   - ../../base
 
 images:
