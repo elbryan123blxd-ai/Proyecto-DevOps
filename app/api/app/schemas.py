@@ -17,7 +17,7 @@ class ProductRead(BaseModel):
     id: int
     name: str
     description: str
-    price: Decimal
+    price: float
     stock: int
     created_at: datetime
 
@@ -38,7 +38,7 @@ class OrderItemRead(BaseModel):
 
     product_id: int
     quantity: int
-    unit_price: Decimal
+    unit_price: float
 
 
 class OrderRead(BaseModel):
@@ -48,6 +48,6 @@ class OrderRead(BaseModel):
     customer_name: str
     customer_email: str
     status: str
-    total: Decimal
+    total: float
     created_at: datetime
     items: list[OrderItemRead]

@@ -14,7 +14,7 @@ export default function Cart({ items, onIncrease, onDecrease, onRemove, onChecko
   }
 
   const total = items.reduce(
-    (sum, item) => sum + item.product.price * item.quantity,
+    (sum, item) => sum + Number(item.product.price) * item.quantity,
     0
   );
 
@@ -27,7 +27,7 @@ export default function Cart({ items, onIncrease, onDecrease, onRemove, onChecko
             <div className="cart-info">
               <span className="cart-name">{item.product.name}</span>
               <span className="cart-price">
-                ${(item.product.price * item.quantity).toFixed(2)}
+                ${(Number(item.product.price) * item.quantity).toFixed(2)}
               </span>
             </div>
             <div className="cart-actions">

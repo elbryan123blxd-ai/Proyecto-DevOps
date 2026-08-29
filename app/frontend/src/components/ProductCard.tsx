@@ -15,7 +15,7 @@ export default function ProductCard({ product, quantityInCart, onAdd }: Props) {
         <h3>{product.name}</h3>
         <p className="desc">{product.description}</p>
         <div className="meta">
-          <span className="price">${product.price.toFixed(2)}</span>
+          <span className="price">${Number(product.price).toFixed(2)}</span>
           <span className={soldOut ? "stock sold-out" : "stock"}>
             {soldOut ? "Sin stock" : `${product.stock} en stock`}
           </span>

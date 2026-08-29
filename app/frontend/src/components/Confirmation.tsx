@@ -17,7 +17,7 @@ export default function Confirmation({ order, onBack }: Props) {
         {order.items.map((item) => (
           <li key={item.product_id}>
             Producto {item.product_id} x{item.quantity} — $
-            {(item.unit_price * item.quantity).toFixed(2)}
+            {(Number(item.unit_price) * item.quantity).toFixed(2)}
           </li>
         ))}
       </ul>
